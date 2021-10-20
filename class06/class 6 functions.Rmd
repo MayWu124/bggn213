@@ -1,0 +1,14 @@
+---
+title: 'calss 6 : R Functions'
+author: "May Wu PID:A59010588"
+date: "10/15/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## quick R Markdown intro
+we can write text of course just like any file, we can **style the text to be bold** or *italic*
+
