@@ -1,0 +1,26 @@
+---
+title: "lab6hw"
+author: "May Wu PID:A59010588"
+date: "10/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Homework 6 Write a function
+
+Analyzing protein drug interactions by reading in any protein PDB data and outputs a plot for the specified protein.
+
+```{r}
+# this function takes in a dataframe and outputs a plot for the input protein
+draw_protein = function(data){
+df <- data.frame(data)
+df$a <- (df$a - min(df$a)) / (max(df$a) - min(df$a))
+}
+```
+
+
+
+
