@@ -1,8 +1,8 @@
 ---
-title: "lab6hw"
+title: "lab 6 Homework: Write a R Function"
 author: "May Wu PID:A59010588"
 date: "10/19/2021"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -14,11 +14,24 @@ knitr::opts_chunk$set(echo = TRUE)
 Analyzing protein drug interactions by reading in any protein PDB data and outputs a plot for the specified protein.
 
 ```{r}
-# this function takes in a dataframe and outputs a plot for the input protein
-draw_protein = function(data){
-df <- data.frame(data)
-df$a <- (df$a - min(df$a)) / (max(df$a) - min(df$a))
+# this function takes in protein PDB data as string and outputs a plot for the input protein
+# data_name: string, the name of the data
+# output: a figure
+draw_protein = function(data_name){
+  data = read.pdb(data_name) # read in the data
+  data.chainA = trim.pdb(data,chain="A", elety = "CA")
+  data.b = data.chainA$atom$b
+  plotb3(data.b, sse= data.chainA, typ="l",ylab="Bfactor")
 }
+```
+
+Here is a demonstration of how to use the function:
+```{r}
+library(bio3d)
+# call the function with data name as the parameter
+draw_protein("4AKE")
+draw_protein("1AKE")
+draw_protein("1E4Y")
 ```
 
 

@@ -1,0 +1,151 @@
+---
+title: "machine learning 1"
+author: "May Wu PID:A59010588"
+date: "10/22/2021"
+output: html_document
+---
+
+# Clustering methods
+kmeans clustering in R is done with `kmeans()` function.
+here we make up some data to test and learn with.
+```{r}
+tmp = c(rnorm(30,3), rnorm(30, -3))
+data = cbind(x=tmp, y=rev(tmp))
+hist(tmp)
+plot(data)
+```
+run `kmeans()` set k (centers) to 2 nstart (numner of iteration) 20. the thing with kmeans is you have to tell it how many clusters you want.
+```{r}
+km=kmeans(data,centers = 2, nstart=20)
+```
+> Q. how many points are in each cluster?
+
+```{r}
+km$size
+```
+> Q. what 'component' of  your result object details cluster assignment/membership?
+
+```{r}
+km$cluster
+```
+
+> Q. what 'component' of  your result object details cluster center?
+
+```{r}
+km$centers
+```
+
+> Q. plot x colored by the kmeans assifnment and add cluster centers as blue points.
+
+```{r}
+plot(data, col = km$cluster)
+points(km$centers, col="blue", pch=15, cex=2)
+```
+
+# Hierarchical clustering
+
+we will use the `hclust()` function on the same data as before and see how this will work
+
+```{r}
+hc  = hclust(d = dist(data))
+plot(hc)
+abline(h=7, col="red")
+```
+
+to find our membership vector we need to "cut" the tree and for this we use the `cutree()` method and tell it the height to cut at.
+
+```{r}
+cutree(hc, h=7)
+```
+we can also use `cutree()` and state the number of k clusters we want
+
+```{r}
+groups = cutree(hc, k=2)
+plot(data, col = groups)
+
+```
+
+# PCA principal component analysis
+PCA is a super useful analysis method when you have lots of dimensions in your data. 
+
+## PCA of UK food data
+
+```{r}
+# import the data from a csv file
+url <- "https://tinyurl.com/UK-foods"
+x <- read.csv(url)
+
+#how many rows and cold?
+dim(x)
+```
+
+```{r}
+# not good, cuz every time you run it you lost a col
+rownames(x) = x[,1]
+x = x[,-1]
+x
+# so do this:
+x <- read.csv(url, row.names = 1)
+```
+
+```{r}
+barplot(as.matrix(x), col=rainbow(17)) # number of color in the rainbow
+mycol=rainbow(nrow(x))
+```
+
+```{r}
+barplot(as.matrix(x), col=rainbow(17), beside= TRUE)
+```
+
+```{r}
+pairs(x, col=mycol, pch=16)
+```
+## PCA to the rescue
+here we will use the base R function for PCA, which is call `prcomp()`. this function wants the transpose of data
+
+```{r}
+x
+# wants countries in the rows and things in the col
+pca = prcomp(t(x))
+summary(pca)
+```
+we want score plot(aka pca plot). basically pc1 vs pc2
+```{r}
+attributes(pca)
+```
+```{r}
+plot(pca$x[,1:2])
+text(pca$x[,1:2], labels = colnames(x))
+```
+
+ we can also examine the PCA "loadings" which tells us how much the original variables contribute to each new pc
+ 
+```{r}
+# mar = A numerical vector of the form c(bottom, left, top, right) which gives the number of lines of margin to be specified on the four sides of the plot. The default is c(5, 4, 4, 2) + 0.1.
+par (mar = c(10,3,0.35,0))
+barplot(pca$rotation[,1], las=2)
+```
+ 
+ ## One more PCA stuff
+```{r}
+url2 <- "https://tinyurl.com/expression-CSV"
+rna.data <- read.csv(url2, row.names=1)
+head(rna.data)
+```
+```{r}
+nrow(rna.data)
+```
+```{r}
+ncol(rna.data)
+colnames(rna.data)
+```
+```{r}
+pca.rna = prcomp(t(rna.data), scale = TRUE)
+summary(pca.rna)
+plot(pca.rna$x[,1:2])
+text(pca.rna$x[,1:2], labels = colnames(rna.data))
+```
+```{r}
+plot(pca.rna)
+```
+ 
