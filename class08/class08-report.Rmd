@@ -2,7 +2,7 @@
 title: "machine learning 1"
 author: "May Wu PID:A59010588"
 date: "10/22/2021"
-output: html_document
+output: pdf_document
 ---
 
 # Clustering methods
