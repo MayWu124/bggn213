@@ -1,0 +1,17 @@
+---
+title: "class13"
+author: "May Wu PID:A59010588"
+date: "11/10/2021"
+output: pdf_document
+---
+
+```{r}
+data = read.csv("mm-second.x.zebrafish.tsv", sep = '\t')
+colnames(data) = c("qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore")
+head(data)
+
+```
+
+
+
+
