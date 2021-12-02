@@ -1,0 +1,65 @@
+---
+title: "find_a_gene"
+author: "May Wu PID:A59010588"
+date: "11/27/2021"
+output: pdf_document
+---
+
+```{r}
+library("bio3d")
+file = "seq_alignment.fst"
+alignment = read.fasta(file, rm.dup = TRUE, to.upper = FALSE, to.dash=TRUE)
+```
+
+```{r}
+identity_matrix = seqidentity(alignment, normalize=TRUE, similarity=FALSE, ncore=1, nseg.scale=1)
+identity_matrix
+```
+
+```{r}
+heatmap(identity_matrix, cexRow = 0.7, cexCol = 0.7, margins = c(8, 7))
+
+```
+
+```{r}
+consseq = consensus(alignment, cutoff = 0.7)
+
+```
+
+```{r}
+blast = blast.pdb(consseq$seq)
+hits = plot.blast(blast)
+```
+
+
+Note that if your consensus sequence has lots of gap positions then it will be better to
+use an original sequence from the alignment for your search of the PDB. In this case
+you could chose the sequence with the highest identity to all others in your alignment by
+calculating the row-wise maximum from your sequence identity matrix. 
+```{r}
+rowSums(identity_matrix)
+# emu has the maximum value
+```
+
+```{r}
+blast$hit.tbl$identity
+hits$pdb.id
+```
+```{r}
+blast$hit.tbl$evalue
+```
+
+```{r}
+ids = c("1GTT_A", "7K4O_A", "2DVT_A")
+anno = pdb.annotate(ids)
+write.csv(anno, 'anno.csv', row.names = TRUE)
+
+```
+
+```{r}
+pdb = read.pdb("1GTT")
+m = nma(pdb)
+plot(m)
+```
+
+

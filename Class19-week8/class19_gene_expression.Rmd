@@ -1,0 +1,87 @@
+---
+title: "week08"
+author: "May Wu PID:A59010588"
+date: "12/1/2021"
+output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Section 1, proportion of G/G in a pupulation
+
+download a csv file from ensemble:
+<https://uswest.ensembl.org/Homo_sapiens/Variation/Sample?db=core;r=17:39898867-40018868;v=rs8067378;vdb=variation;vf=105535077#373531_tablePanel>
+
+```{r}
+mxl = read.csv("373531-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
+head(mxl)
+```
+
+```{r}
+table(mxl$Genotype..forward.strand.)
+```
+
+```{r}
+table(mxl$Genotype..forward.strand.)/nrow(mxl)*100
+```
+
+```{r}
+gbr = read.csv("373522-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
+```
+
+```{r}
+round(table(gbr$Genotype..forward.strand.) / nrow(gbr) * 100,2)
+```
+
+This variant that is associated with childhood asthma is more frequent
+in the GBR population than the MKL population.
+
+Let's dig into this further
+
+```{r}
+expr = read.table("sample_data.txt")
+head(expr)
+```
+
+**Q13:** Read this file into R and determine the sample size for each
+genotype and their corresponding median expression levels for each of
+these genotypes. Hint: The read.table(), summary() and boxplot()
+functions will likely be useful here. There is an example R script
+online to be used ONLY if you are struggling in vein. Note that you can
+find the medium value from saving the output of the boxplot() function
+to an R object and examining this object. There is also the medium() and
+summary() function that you can use to check your understanding.
+
+**A:** There are 462 data in total. Information for each genotype as
+follow: 
+
+- genotype;   sample size;   median
+- A/A :        108;         31.25
+- A/G :        233;         25.065
+- G/G :        121;         20.074 
+
+```{r}
+table(expr$geno)
+```
+
+```{r}
+summary(expr[expr$geno == "A/A",])
+summary(expr[expr$geno == "A/G",])
+summary(expr[expr$geno == "G/G",])
+```
+
+Q14: Generate a boxplot with a box per genotype, what could you infer from the relative expression value between A/A and G/G displayed in this plot? Does the SNP effect the expression of ORMDL3?
+
+**A:** A/A and G/G has different expression level, which means this SNP does affect ORMDL3 expression level.
+
+```{r}
+library(ggplot2)
+ggplot(expr) + aes(geno, exp, fill=geno) + geom_boxplot(notch = TRUE)
+```
+
+

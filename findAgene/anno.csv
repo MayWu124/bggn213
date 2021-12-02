@@ -1,0 +1,13 @@
+,structureId,chainId,macromoleculeType,chainLength,experimentalTechnique,resolution,scopDomain,pfam,ligandId,ligandName,source,structureTitle,citation,rObserved,rFree,rWork,spaceGroup
+1GTT_A,1GTT,A,Protein,429,X-ray,1.7,4-hydroxyphenylacetate degradation bifunctional isomerase/decarboxylase HpcE,Fumarylacetoacetate (FAA) hydrolase family (FAA_hydrolase),CA,CALCIUM ION,Escherichia coli,CRYSTAL STRUCTURE OF HPCE,"Tame, J.R.H., et al. Biochemistry (2002)",0.217,0.252,0.216,P 21 21 21
+7K4O_A,7K4O,A,Protein,554,X-ray,1.65,NA,NA,"NAG (2),GDE,CA,ZN (4),CL (2),NA,FWN","2-acetamido-2-deoxy-beta-D-glucopyranose (2),3,4,5-trihydroxybenzoic acid,CALCIUM ION,ZINC ION (4),CHLORIDE ION (2),SODIUM ION,2-[2-(2-ethoxyethoxy)ethoxy]ethanol",Aspergillus niger,Tannin acyl hydrolase from Aspergillus niger,"Dong, L., et al. Acta Crystallogr D Struct Biol (2021)",NA,0.1738,0.1521,P 65 2 2
+2DVT_A,2DVT,A,Protein,327,X-ray,1.7,Thermophilic reversible gamma-resorcylate decarboxylase,Amidohydrolase (Amidohydro_2),ZN,ZINC ION,Rhizobium sp. MTP-10005,"Crystal Structure of 2,6-Dihydroxybenzoate Decarboxylase from Rhizobium","Goto, M., et al. To be published ",0.18,0.2,0.18,P 21 21 21
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,structureId,experimentalTechnique,resolution,E value,identity,source,,,,,,,,,,,
+1GTT_A,1GTT,X-ray,1.7,2.8,32.258,Escherichia coli,,,,,,,,,,,
+7K4O_A,7K4O,X-ray,1.65,3.4,25.641,Aspergillus niger,,,,,,,,,,,
+2DVT_A,2DVT,X-ray,1.7,7.3,31.034,Rhizobium sp. MTP-10005,,,,,,,,,,,

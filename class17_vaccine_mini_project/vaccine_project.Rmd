@@ -1,0 +1,203 @@
+---
+title: "vaccine"
+author: "May Wu PID:A59010588"
+date: "11/24/2021"
+output:
+  pdf_document:
+   latex_engine: xelatex
+---
+
+## Mini-Project
+
+# COVID-19 Vaccination Rates
+
+```{r}
+vax <- read.csv( 'covid19vaccinesbyzipcode_test.csv' )
+head(vax)
+```
+
+> Q. how many entries do we have?
+
+```{r}
+nrow(vax)
+```
+
+we can use the **skimr** package and the `skim()` function to get a quick overview of the data
+
+```{r}
+skimr::skim(vax)
+```
+
+Notice that one of these columns is a date column. Working with time and dates gets annoying quickly. we can use **lubridate** package to make this easy `install.packages("lubridate")`
+
+```{r}
+library(lubridate)
+today()
+
+```
+
+> how many days since the first entry in the dataset?
+
+```{r}
+vax$as_of_date[1]
+```
+
+This will not work because our data column was read as characters
+```{r}
+#today()-vax$as_of_date[1]
+```
+
+```{r}
+d = ymd(vax$as_of_date)
+```
+
+```{r}
+today()-d[1]
+```
+will make the `as_of_date` column Date format
+
+```{r}
+vax$as_of_date = ymd(vax$as_of_date)
+```
+
+> Q. When was the dataset last updated? what is the last date in this dataset? 
+
+```{r}
+today() - vax$as_of_date[nrow(vax)]
+```
+> Q. how many days since the last update?
+
+```{r}
+ vax$as_of_date[nrow(vax)] - vax$as_of_date[1]
+```
+
+> Q. how many different zip code
+
+```{r}
+length(unique(vax$zip_code_tabulation_area))
+```
+To work with zipcode, we can use the **zipcodeR**
+```{r}
+library(zipcodeR)
+reverse_zipcode(c('92037', "92109") )
+```
+## Focus on San Diego county
+
+subset the full CA `vax` data down to just SD County using `filter()`
+
+```{r}
+library(dplyr)
+
+sd <- filter(vax, county == "San Diego")
+
+nrow(sd)
+```
+
+More complicated subsetting 
+
+```{r}
+
+sd.20 = filter(vax, county == "San Diego",
+       age5_plus_population > 20000)
+nrow(sd.20)
+```
+
+> Q. What is the average vaccination rate of SD as of yesterday?
+
+```{r}
+sd.now = filter(vax, county == "San Diego", as_of_date == '2021-11-23')
+head(sd.now)
+```
+
+```{r}
+summary(sd.now$percent_of_population_fully_vaccinated)
+```
+
+> Q. make a histogram of these value
+
+base R histogram
+```{r}
+hist(sd.now$percent_of_population_fully_vaccinated)
+```
+
+> Q. What's the average vaccination value for 92037 area?
+
+```{r}
+d = filter(sd.now,zip_code_tabulation_area == '92037' )
+d$percent_of_population_fully_vaccinated
+```
+
+> Q. what's the population of the 92037 ZIP code area?
+
+```{r}
+d$persons_fully_vaccinated
+```
+
+```{r}
+d = filter(sd.now,zip_code_tabulation_area == '92124' )
+d$percent_of_population_fully_vaccinated
+```
+
+time series of vaccination rate for a given ZIP code area.
+
+starting with 92037
+
+
+```{r}
+
+lj = filter(vax, zip_code_tabulation_area == '92037')
+library(ggplot2)
+#vax$percent_of_population_fully_vaccinated
+ggplot(lj, aes(x=as_of_date, y=percent_of_population_fully_vaccinated)) + geom_line(group = 1) + geom_point() + labs(x='Date', y = 'percent vaccinated')
+
+```
+Let's make this plot for the whole SD county
+
+```{r}
+sd.36 = filter(vax, county == 'San Diego', age5_plus_population > 36144)
+head(sd.36)
+```
+
+> Q. how many ZIP code areas in SD county have a population larger than 92037
+
+```{r}
+length(unique(sd.36$zip_code_tabulation_area))
+```
+lets make the plot
+
+```{r}
+ggplot(sd.36, aes(x=as_of_date, y=percent_of_population_fully_vaccinated, group = zip_code_tabulation_area) ) + 
+  geom_line() + 
+  labs(x='Date', y = 'percent vaccinated')
+
+```
+
+> Q. Make a plot like this for the all ZIP code areas in the State with a population at least as large as La Jolla
+
+```{r}
+ca = filter(vax,  age5_plus_population > 36144)
+head(ca)
+```
+
+```{r}
+length(unique(ca$zip_code_tabulation_area))
+```
+```{r}
+ggplot(ca, aes(x=as_of_date, y=percent_of_population_fully_vaccinated, group = zip_code_tabulation_area) ) + 
+  geom_line(alpha = 0.2) + 
+  labs(x='Date', y = 'percent vaccinated') + 
+  geom_hline(yintercept = 0.67, color = 'red')
+
+```
+
+> Q. What is the mean across the state for these 36k+ population area?
+
+```{r}
+ca.now = filter(ca, as_of_date =='2021-11-23')
+summary(ca.now$percent_of_population_fully_vaccinated)
+
+```
+
+
+
+
