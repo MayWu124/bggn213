@@ -1,7 +1,7 @@
 # bggn213
 
 bioinformatic class at UC San Diego 2021 fall
-here is line 4
+![alt text](https://bioboot.github.io/bggn213_F21/assets/img/logo.png)
 
 ## contents: 
 - 04 Introduction to R
